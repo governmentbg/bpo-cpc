@@ -1,0 +1,577 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.wipo.int/classifications/ipc/masterfiles" targetNamespace="http://www.wipo.int/classifications/ipc/masterfiles" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:appinfo>inc-types_3-1.xsd</xs:appinfo>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>
+			<h1>IPC common types</h1>
+		</xs:documentation>
+	</xs:annotation>
+	<xs:simpleType name="edition">
+		<xs:annotation>
+			<xs:documentation>
+				<div>version date, 8 digit form (YYYYMMDD)</div>
+				<div>using the reformed IPC convention (YYYYMMDD where Y=year, M= Month, D=Day)</div>
+				<div>For Pre-reform IPC symbols the correspondence between editions and dates is as follows:</div>
+				<ul>
+					<li>
+						<b>edition 1:</b> from 19680901 to 19740630</li>
+					<li>
+						<b>edition 2:</b> from 19740701 to 19791231</li>
+					<li>
+						<b>edition 3:</b> from 19800101 to 19841231</li>
+					<li>
+						<b>edition 4:</b> from 19850101 to 19891231</li>
+					<li>
+						<b>edition 5:</b> from 19900101 to 19941231</li>
+					<li>
+						<b>edition 6:</b> from 19950101 to 19991231</li>
+					<li>
+						<b>edition 7:</b> from 20000101 to 20051231</li>
+				</ul>
+				<div>in files before 20100101: list of digits designating the edition numbers.</div>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="(19|20)[0-9]{6}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="editionList">
+		<xs:annotation>
+			<xs:documentation>
+				<div>(optionally empty) list of edition dates, 8 digit form (YYYYMMDD)</div>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value=""/>
+			<xs:pattern value="(19|20)[0-9]{6}(,(19|20)[0-9]{6})?(,(19|20)[0-9]{6})?(,(19|20)[0-9]{6})?(,(19|20)[0-9]{6})?(,(19|20)[0-9]{6})?(,(19|20)[0-9]{6})?(,(19|20)[0-9]{6})?"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="lang">
+		<xs:annotation>
+			<xs:documentation>
+				<div>2 letter language code in upper case</div>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[A-Z][A-Z]">
+				<xs:annotation>
+					<xs:documentation>2 upper case characters</xs:documentation>
+				</xs:annotation>
+			</xs:pattern>
+			<xs:enumeration value="EN"/>
+			<xs:enumeration value="FR"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="yesno">
+		<xs:annotation>
+			<xs:documentation>boolean, coded with Y or N</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:enumeration value="Y">
+				<xs:annotation>
+					<xs:documentation>yes</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="N">
+				<xs:annotation>
+					<xs:documentation>no</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="emptyOrInteger">
+		<xs:annotation>
+			<xs:documentation>empty or integer number</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="|[0-9]+"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="noteType">
+		<xs:annotation>
+			<xs:documentation>
+				<div>type of the note paragraphs, base on presentation and prefix</div>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="">
+				<xs:annotation>
+					<xs:documentation>simple note, no prefix</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="none">
+				<xs:annotation>
+					<xs:documentation>simple note, no prefix</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="number">
+				<xs:annotation>
+					<xs:documentation>numbered prefix, e.g. 1.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="subnoteType">
+		<xs:annotation>
+			<xs:documentation>
+				<div>type of the subnote paragraphs, base on presentation and prefix</div>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="">
+				<xs:annotation>
+					<xs:documentation>simple note, no prefix</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="none">
+				<xs:annotation>
+					<xs:documentation>simple note, no prefix</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="table">
+				<xs:annotation>
+					<xs:documentation>table note paragraph: sequence of reference list and text</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="number">
+				<xs:annotation>
+					<xs:documentation>numbered prefix, e.g. 1.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Roman">
+				<xs:annotation>
+					<xs:documentation>upper-case Roman prefix, e.g. III.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="roman">
+				<xs:annotation>
+					<xs:documentation>lower-case Roman e.g. iii)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Alpha">
+				<xs:annotation>
+					<xs:documentation>upper-case letter, e.g. A.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="alpha">
+				<xs:annotation>
+					<xs:documentation>lower-case letter, e.g. (a)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="bullet">
+				<xs:annotation>
+					<xs:documentation>bulleted paragraph</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="indent">
+		<xs:annotation>
+			<xs:documentation>
+				<div>indentation depth when not automatic<br/>
+						rarely used in newer editions of IPC but appeared in prereform editions</div>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="section">
+		<xs:annotation>
+			<xs:documentation>
+				<div>IPC section</div>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[A-H]"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="class">
+		<xs:annotation>
+			<xs:documentation>
+				<div>IPC class</div>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[A-H][0-9][1-9]">
+				<xs:annotation>
+					<xs:documentation>class, e.g. A01</xs:documentation>
+				</xs:annotation>
+			</xs:pattern>
+			<xs:pattern value="[A-H][1-9][0-9]">
+				<xs:annotation>
+					<xs:documentation>class, e.g. A10</xs:documentation>
+				</xs:annotation>
+			</xs:pattern>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="subclass">
+		<xs:annotation>
+			<xs:documentation>
+				<div>IPC subclass</div>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[A-H][0-9][1-9][A-Z]">
+				<xs:annotation>
+					<xs:documentation>subclass, e.g. A01B</xs:documentation>
+				</xs:annotation>
+			</xs:pattern>
+			<xs:pattern value="[A-H][1-9][0-9][A-Z]">
+				<xs:annotation>
+					<xs:documentation>subclass, e.g. A10B</xs:documentation>
+				</xs:annotation>
+			</xs:pattern>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="symbol">
+		<xs:annotation>
+			<xs:documentation>
+				<div>IPC symbol</div>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[A-H]">
+				<xs:annotation>
+					<xs:documentation>section, e.g. C</xs:documentation>
+				</xs:annotation>
+			</xs:pattern>
+			<xs:pattern value="[A-H][0-9][1-9]">
+				<xs:annotation>
+					<xs:documentation>class, e.g. A01</xs:documentation>
+				</xs:annotation>
+			</xs:pattern>
+			<xs:pattern value="[A-H][1-9][0-9]">
+				<xs:annotation>
+					<xs:documentation>class, e.g. A10</xs:documentation>
+				</xs:annotation>
+			</xs:pattern>
+			<xs:pattern value="[A-H][0-9][1-9][A-Z]">
+				<xs:annotation>
+					<xs:documentation>subclass, e.g. A01B</xs:documentation>
+				</xs:annotation>
+			</xs:pattern>
+			<xs:pattern value="[A-H][1-9][0-9][A-Z]">
+				<xs:annotation>
+					<xs:documentation>subclass, e.g. A10B</xs:documentation>
+				</xs:annotation>
+			</xs:pattern>
+			<xs:pattern value="[A-H][0-9]{2}[A-Z][0-9]{10,13}[0A-Z]?">
+				<xs:annotation>
+					<xs:documentation>group, e.g. A01B0001000000</xs:documentation>
+				</xs:annotation>
+			</xs:pattern>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="remark">
+		<xs:annotation>
+			<xs:documentation>
+				<div>Comment associated to a symbol, catchword entry etc.</div>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="ipcEntryKind">
+		<xs:annotation>
+			<xs:documentation>
+				<div>kind of IPC entry</div>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:enumeration value="s">
+				<xs:annotation>
+					<xs:documentation>
+						<div>Structured: section (root)</div>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="t">
+				<xs:annotation>
+					<xs:documentation>
+						<div>Non-structured: subsection title</div>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="c">
+				<xs:annotation>
+					<xs:documentation>
+						<div>Structured: class</div>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="u">
+				<xs:annotation>
+					<xs:documentation>
+						<div>Structured: subclass</div>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="g">
+				<xs:annotation>
+					<xs:documentation>
+						<div>Non-structured: guidance heading</div>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="m">
+				<xs:annotation>
+					<xs:documentation>
+						<div>Structured: main group</div>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation>
+						<div>Structured: 1-dot group</div>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="2">
+				<xs:annotation>
+					<xs:documentation>
+						<div>Structured: 2-dot group</div>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="3">
+				<xs:annotation>
+					<xs:documentation>
+						<div>Structured: 3-dot group</div>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="4">
+				<xs:annotation>
+					<xs:documentation>
+						<div>Structured: 4-dot group</div>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="5">
+				<xs:annotation>
+					<xs:documentation>
+						<div>Structured: 5-dot group</div>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="6">
+				<xs:annotation>
+					<xs:documentation>
+						<div>Structured: 6-dot group</div>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="7">
+				<xs:annotation>
+					<xs:documentation>
+						<div>Structured: 7-dot group</div>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="8">
+				<xs:annotation>
+					<xs:documentation>
+						<div>Structured: 8-dot group</div>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="9">
+				<xs:annotation>
+					<xs:documentation>
+						<div>Structured: 9-dot group</div>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="A">
+				<xs:annotation>
+					<xs:documentation>
+						<div>Structured: 10-dot group</div>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="B">
+				<xs:annotation>
+					<xs:documentation>
+						<div>Structured: 11-dot group</div>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C">
+				<xs:annotation>
+					<xs:documentation>
+						<div>Structured: 12-dot group</div>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="D">
+				<xs:annotation>
+					<xs:documentation>
+						<div>Structured: 13-dot group</div>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="E">
+				<xs:annotation>
+					<xs:documentation>
+						<div>Structured: 14-dot group</div>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="i">
+				<xs:annotation>
+					<xs:documentation>
+						<div>Non-structured: index of subsection title, class or subclass</div>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="n">
+				<xs:annotation>
+					<xs:documentation>
+						<div>Non-structured: note</div>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="sref">
+		<xs:annotation>
+			<xs:documentation>
+				<div>single reference to a structured IPC</div>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="ref" type="symbol" use="required">
+			<xs:annotation>
+				<xs:documentation>
+					<div>referred symbol</div>
+					<div>Versions on and before 20070101 of the <b>compilation file</b> contain short form of the symbol.</div>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="mref">
+		<xs:annotation>
+			<xs:documentation>
+				<div>interval references to IPC symbols</div>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="sref">
+				<xs:attribute name="endRef" type="symbol" use="required">
+					<xs:annotation>
+						<xs:documentation>
+							<div>end of reference interval IPC symbol in A99AZZZMGGZZZZ format</div>
+							<div>Versions on and before 20070101 of the <b>compilation file</b>: the reference is in short, abbreviated format.</div>
+						</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+			<!-- TODO revision of former files -->
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="sub" mixed="true">
+		<xs:annotation>
+			<xs:documentation>
+				<div>subscript markup of text content</div>
+			</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:complexType name="sup" mixed="true">
+		<xs:annotation>
+			<xs:documentation>
+				<div>superscript markup of text content</div>
+			</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:complexType name="underline" mixed="true">
+		<xs:annotation>
+			<xs:documentation>
+				<div>underlined text, mostly for "per se" and similar</div>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="sref" type="sref">
+				<xs:annotation>
+					<xs:documentation>
+						<div>underlined reference (mostly in prereform editions)</div>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="mref" type="mref">
+				<xs:annotation>
+					<xs:documentation>
+						<div>underlined reference interval (mostly in prereform editions)</div>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="img">
+		<xs:annotation>
+			<xs:documentation>
+				<div>in-line image</div>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="src" type="fileName" use="required"/>
+	</xs:complexType>
+	<xs:simpleType name="fileName">
+		<xs:annotation>
+			<xs:documentation>
+				<div>path-less file name</div>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[a-zA-Z0-9_\.-]+"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="entryType">
+		<xs:annotation>
+			<xs:documentation>
+				<div>entry type, in reformed IPC: usually classifying, used as double purpose</div>
+				<div>In prereform editions all three values were in use.</div>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:enumeration value="K">
+				<xs:annotation>
+					<xs:documentation>
+						<div>classification symbol</div>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="I">
+				<xs:annotation>
+					<xs:documentation>
+						<div>indexing symbol</div>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="D">
+				<xs:annotation>
+					<xs:documentation>
+						<div>Double purpose symbol (Pre reform only)</div>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		    <xs:enumeration value="Z">
+				<xs:annotation>
+					<xs:documentation>
+						<div>Problematic entry (i.e. structure and/or contents have been partially converted from CPC or FI)</div>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="classificationScheme">
+		<xs:annotation>
+			<xs:documentation>boolean, coded with Y or N</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:enumeration value="ipc"/>
+			<xs:enumeration value="cpc"/>
+			<xs:enumeration value="fi"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

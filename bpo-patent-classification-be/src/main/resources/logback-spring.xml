@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!--do not print the logback status messages -->
+    <!--<statusListener class="ch.qos.logback.core.status.NopStatusListener" />-->
+    <appender name="FILE"  class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/bpo-patent-classification-be.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>
+                %d{yyyy-MM-dd HH:mm:ss} [%X{remoteIp}] [%X{loggedUser}] %-5level %logger - %msg%n
+            </Pattern>
+        </encoder>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>logs/bpo-patent-classification-be.%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+        </rollingPolicy>
+    </appender>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender" >
+        <target>System.out</target>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                %d{yyyy-MM-dd HH:mm:ss} [%thread] [%X{remoteIp}] [%X{loggedUser}] %-5level %logger - %msg%n
+            </Pattern>
+        </layout>
+    </appender>
+    <appender name="STDERR" class="ch.qos.logback.core.ConsoleAppender" >
+        <target>System.err</target>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                %d{yyyy-MM-dd HH:mm:ss} [%thread] [%X{remoteIp}] [%X{loggedUser}] %-5level %logger - %msg%n
+            </Pattern>
+        </layout>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+    </appender>
+
+    <logger name="bg.duosoft" level="trace" />
+    <logger name="net.duosoft" level="trace" />
+    <logger name="com.duosoft" level="trace" />
+    <springProfile name="dev">
+        <root level="info">
+            <appender-ref ref="FILE" />
+            <appender-ref ref="STDOUT" />
+            <appender-ref ref="STDERR" />
+        </root>
+    </springProfile>
+
+    <springProfile name="office | stage">
+        <root level="debug">
+            <appender-ref ref="FILE" />
+            <appender-ref ref="STDERR" />
+        </root>
+    </springProfile>
+
+    <springProfile name="production">
+        <root level="info">
+            <appender-ref ref="FILE" />
+            <appender-ref ref="STDERR" />
+        </root>
+    </springProfile>
+</configuration>

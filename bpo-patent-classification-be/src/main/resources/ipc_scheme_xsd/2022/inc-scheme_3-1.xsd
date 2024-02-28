@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.wipo.int/classifications/ipc/masterfiles" targetNamespace="http://www.wipo.int/classifications/ipc/masterfiles" elementFormDefault="qualified">
+	<xs:include schemaLocation="inc-types_3-1.xsd"/>
+	<xs:annotation>
+		<xs:appinfo>inc-scheme_3-1.xsd</xs:appinfo>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>
+			<h1>IPC common types for schema and compilation files</h1>
+		</xs:documentation>
+	</xs:annotation>
+	<xs:attributeGroup name="ipcEntryAttributes">
+		<xs:annotation>
+			<xs:documentation>
+				<div>Base attribute list for IPC entries</div>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="symbol" type="symbol" use="required">
+			<xs:annotation>
+				<xs:documentation>
+					<div>symbol of entry or start of scope for non-structured entries</div>
+					<div>unique for structured entries only</div>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="endSymbol" type="symbol">
+			<xs:annotation>
+				<xs:documentation>
+					<div>end of scope symbol, for non-structured entries only, e.g. for notes</div>
+					<div>the scope lasts until the last descendant of the endSymbol</div>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="entryType" type="entryType" default="K">
+			<xs:annotation>
+				<xs:documentation>
+					<div>entry type</div>
+					<div>e.g. classifying, double purpose or indexing<br/>mostly relevant in prereform versions</div>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="kind" type="ipcEntryKind">
+			<xs:annotation>
+				<xs:documentation>
+					<div>type of IPC entry, e.g. 'm' for maingroup</div>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="edition" type="editionList">
+			<xs:annotation>
+				<xs:documentation>
+					<div>non-empty IPC version list</div>
+					<div>versions separated by comma</div>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="scheme" type="classificationScheme" default="ipc">
+			<xs:annotation>
+				<xs:documentation>
+					<div>Classifications Scheme of origin</div>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:complexType name="schemeTitle">
+		<xs:annotation>
+			<xs:documentation>
+				<div>body of structured elements as described in Guide: multipart title</div>
+				<div>semicolon-separated list of title parts in presentation</div>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element name="titlePart" type="schemeTitlePart"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="schemeTitlePart">
+		<xs:annotation>
+			<xs:documentation>
+				<div>text and associated references</div>
+				<h3>Comment</h3>
+				<div>In presentation: the entryReferences, if any, are put into parentheses and separated by ';'-s</div>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="text" type="schemeText">
+				<xs:annotation>
+					<xs:documentation>
+						<div>text of the titlePart</div>
+						<div>Rules for starting with capital or lower case letters: see the Guide.</div>
+						<div>Does not contain the ; separator, neither parentheses.</div>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="entryReference" type="schemeEntryReference" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="schemeText" mixed="true">
+		<xs:annotation>
+			<xs:documentation>
+				<div>formatted text, also may contain references, symbols and images</div>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:group ref="schemeTextContent"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="schemeEntryReference" mixed="true">
+		<xs:annotation>
+			<xs:documentation>
+				<div>a titlePart may have a sequence of entryReferences (i.e. those presented in text of IPC symbols in parentheses), separated by semicolons</div>
+				<h3>Comment</h3>
+				<dl>
+					<dt>usual format of entry references</dt>
+					<dd>text followed by a sequence of references</dd>
+					<dt>take precedences and some others</dt>
+					<dd>free order of text and references</dd>
+				</dl>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="schemeText"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:group name="schemeTextContent">
+		<xs:annotation>
+			<xs:documentation>
+				<div>text containing formatting markup and special characters</div>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="u" type="underline"/>
+			<xs:element name="sup" type="sup">
+				<xs:annotation>
+					<xs:documentation/>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="sub" type="sub">
+				<xs:annotation>
+					<xs:documentation/>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="img" type="img"/>
+			<xs:element name="sref" type="sref">
+				<xs:annotation>
+					<xs:documentation/>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="mref" type="mref">
+				<xs:annotation>
+					<xs:documentation/>
+				</xs:annotation>
+			</xs:element>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="schemeReferences" mixed="true">
+		<xs:annotation>
+			<xs:documentation>
+				<div>list of references with separators. used in notes and note paragraphs (reference tables)</div>
+				<div>Sequence of:</div>
+				<ul>
+					<li>mixed text (should be just separators)</li>
+					<li>single reference or interval reference</li>
+				</ul>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="sref" type="sref">
+				<xs:annotation>
+					<xs:documentation>reference without any other markup</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="mref" type="mref">
+				<xs:annotation>
+					<xs:documentation>reference interval without any other markup</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="schemeTextBody">
+		<xs:annotation>
+			<xs:documentation>
+				<div>text of a structured or non-structured entry</div>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="note" type="schemeNote">
+				<xs:annotation>
+					<xs:documentation>
+						<div>note: when kind='n'</div>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="index" type="schemeIndex">
+				<xs:annotation>
+					<xs:documentation>
+						<div>index: when kind='i'</div>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="title" type="schemeTitle">
+				<xs:annotation>
+					<xs:documentation>
+						<div>multipart title: when structured, kind='g' (guidance heading), kind='t' (subsection title)</div>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="schemeNote">
+		<xs:annotation>
+			<xs:documentation>
+				<div>non-structured element: note</div>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element name="noteParagraph" type="schemeNoteParagraph">
+				<xs:annotation>
+					<xs:documentation>
+						<div>paragraph of a note</div>
+						<div>The following rules apply:</div>
+						<ol>
+							<li>usually numbered or number-less notes are the points of notes</li>
+							<li>some notes (usually section notes) may contain Roman numbered notes</li>
+							<li>when the noteParagraph is non-numbered, there is no further noteParagraph sibling</li>
+						</ol>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="type" type="noteType" default="none">
+			<xs:annotation>
+				<xs:documentation>
+					<div>type of prefix;<br/>
+							e.g. Roman is like I,II,IV,<br/>
+							Alpha: like A. (seldomly used)</div>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="indent" type="indent">
+			<xs:annotation>
+				<xs:documentation>
+					<div>indentation depth (if not automatic)<br/>
+						obsolete in newer editions but appeared in prereform editions</div>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="schemeNoteParagraph">
+		<xs:annotation>
+			<xs:documentation>
+				<div>text of a single paragraph and its subparagraphs</div>
+				<h3>Structure:</h3>
+				<div>two independent cases:</div>
+				<ul>
+					<li>when parent note type is regular prefixed or non-prefixed (not a 'table'):<br/>
+						<dl>
+							<dt>text</dt>
+							<dd>contains the text itself</dd>
+							<dt>subnote</dt>
+							<dd>sequence of subparagraphs</dd>
+							<dt>orphan:</dt>
+							<dd>a subparagraph that falls out of the subparagraph sequence (non-prefixed)</dd>
+						</dl>
+					</li>
+					<li>when parent note type is 'table' (during the reform: gradually moved to the definitions):<br/>
+						<dl>
+							<dt>references</dt>
+							<dd>list of references</dd>
+							<dt>text</dt>
+							<dd>text associated to references</dd>
+						</dl>
+					</li>
+				</ul>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:sequence>
+				<xs:element name="text" type="schemeText">
+					<xs:annotation>
+						<xs:documentation>
+							<div>text of the primary note paragraph, without prefix</div>
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="subnote" type="schemeSubNote" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>
+							<div>subparagraph note</div>
+							<ul>
+								<li>may contain further subnotes</li>
+								<li>subnotes should have a different type than their ancestor note or subnote</li>
+							</ul>
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="orphan" type="schemeOrphan" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>
+							<div>closes the sentence starting with the text and embedding the subnote-s</div>
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+			<xs:sequence>
+				<xs:element name="references" type="schemeReferences">
+					<xs:annotation>
+						<xs:documentation>in note reference tables: list of references in the left column</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="text" type="schemeText">
+					<xs:annotation>
+						<xs:documentation>in note reference tables: text in the right column</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:choice>
+		<xs:attribute name="edition" type="editionList">
+			<xs:annotation>
+				<xs:documentation>
+					<div>each single paragraph may have an edition attribute, that may be different from the attribute of the embedding ipcEntry</div>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="schemeOrphan">
+		<xs:annotation>
+			<xs:documentation>
+				<div>out-of-sequence subparagraph closing a sentence and rarely opening a new subdivision</div>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="text" type="schemeText">
+				<xs:annotation>
+					<xs:documentation>
+						<div>text of the orphan; never contains any prefix</div>
+						<div>Usually closes the sentence started in th owning subnote.</div>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="subnote" type="schemeSubNote" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						<div>subnote within an orphan<br/>
+						when a new sequence of subparagraphs starts under the orphan;</div>
+						<div>
+							<b>There are very few notes that contain further subdivision of an orphan.</b>
+						</div>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="orphan" type="schemeOrphan" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						<div>optional orphan, that closes the sentence started in the owning orphan</div>
+						<div>
+							<b>There are very few notes that contain orphan of an orphan.</b>
+						</div>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="indent" type="indent"/>
+		<xs:attribute name="edition" type="editionList">
+			<xs:annotation>
+				<xs:documentation>
+					<div>an orphan may have an edition mark</div>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="schemeSubNote">
+		<xs:annotation>
+			<xs:documentation>
+				<div>sequence of embedded noteParagraph-s</div>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element name="noteParagraph" type="schemeNoteParagraph">
+				<xs:annotation>
+					<xs:documentation>
+						<div>paragraphs of a subnote</div>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="type" type="subnoteType" default="none"/>
+		<xs:attribute name="indent" type="indent"/>
+	</xs:complexType>
+	<xs:complexType name="schemeIndex">
+		<xs:annotation>
+			<xs:documentation>
+				<div>body of indexes of a subclass, class and subsection</div>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element name="indexEntry" type="schemeIndexEntry">
+				<xs:annotation>
+					<xs:documentation>
+						<div>root index entry</div>
+						<h3>Comment</h3>
+						<div>root indexEntry-s are presented in the EN,FR languages in full capitals (but not necessarily in all languages)</div>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="schemeIndexEntry">
+		<xs:annotation>
+			<xs:documentation>
+				<div>one paragraph of an index, containing a text and list of references</div>
+				<h3>Comments</h3>
+				<ul>
+					<li>References should not be empty on the leaves.</li>
+					<li>Embedding means also: deeper indentation level in presentation and subdivision of subject matter.</li>
+					<li>List of IPC symbol intervals is not necessarily sequential; inner symbols may appear at a different indexEntry.</li>
+				</ul>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="text" type="schemeText">
+				<xs:annotation>
+					<xs:documentation>
+						<div>index entry title</div>
+						<div>May contain underlined text or references (mostly in prereform editions).</div>
+						<div>May contain references (mostly for residual groups in prereform editions).</div>
+						<div>On level 0: capital letters in EN and FR.</div>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="references" type="schemeReferences" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>list of references in indexEntry-s; if there are no sibling indexEntry-s, should not be empty</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="indexEntry" type="schemeIndexEntry" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>
+						<div>embedded indexEntry-s, whose subject matter falls under the containing indexEntry</div>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

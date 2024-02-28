@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: bpo-patent-classification-be
+  profiles:
+    active: '@activeProfile@'
+---
+spring:
+  config:
+    activate.on-profile:
+      - dev
+      - office
+    import: configserver:...
+
+---
+spring:
+  config:
+    activate.on-profile:
+      - stage
+    import: configserver:...

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2013 rel. 2 sp2 (http://www.altova.com) by PCuser (World Intellectual Property Organization) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.wipo.int/classifications/ipc/masterfiles" targetNamespace="http://www.wipo.int/classifications/ipc/masterfiles" elementFormDefault="qualified">
+	<xs:include schemaLocation="inc-scheme_3-1.xsd"/>
+	<xs:annotation>
+		<xs:appinfo>ipc_scheme_3-1.xsd</xs:appinfo>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>
+			<h1>IPC Scheme Master file</h1>
+		</xs:documentation>
+	</xs:annotation>
+	<xs:element name="IPCScheme" type="IPCScheme" />
+	<xs:complexType name="IPCScheme">
+		<xs:annotation>
+			<xs:documentation>
+				<div>One IPC version in one language</div>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ipcEntry" type="ipcEntry" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>
+						<div>IPC sections, i.e. kind attribute is 's'</div>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="edition" type="edition" use="required">
+			<xs:annotation>
+				<xs:documentation>e.g. 20060101</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="lang" type="lang" use="required">
+			<xs:annotation>
+				<xs:documentation>
+					<div>language of indications in this index</div>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="ipcEntry">
+		<xs:annotation>
+			<xs:documentation>
+				<div>representation of structured and non-structured elements of the IPC text</div>
+				<h3>Comments</h3>
+				<ol>
+					<li>non-structured entries are: subsection titles, indexes, notes, guide headings</li>
+					<li>for structured entries the symbol attribute must be unique in one language</li>
+					<li>non-structured entries are identified by symbolTo attribute in case the scope of the non-structured entry overlaps more structured entries that are on the same level as the start of the scope</li>
+					<li>a note that belongs to a sequence of ipcEntries is presented in the list 
+					of the parent of the highest entry within its scope</li>
+					<li>a non-structured entry (note, guidance heading, subsection title)
+						must not contain embedded ipcEntry entries</li>
+					<li>ipcEntry in compilation files has a different structure</li>
+				</ol>
+				<h3>History</h3>
+				<dl>
+					<dt>
+						20051001 TA</dt>
+					<dd>language code allows any two-letter language code</dd>
+					<dd>obsolete EF language code maybe used at language-independent cases, e.g. deletions; EF is a non-existing 2-letter language code</dd>
+				</dl>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="textBody" type="schemeTextBody" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>may be empty in prereform editions, e.g. removed notes</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ipcEntry" type="ipcEntry" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>
+						<div>a subdivision of the parent ipcEntry or non-structured ipcEntry within the scope of the parent</div>
+						<div>parent ipcEntry must be structured</div>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attributeGroup ref="ipcEntryAttributes"/>
+	</xs:complexType>
+</xs:schema>

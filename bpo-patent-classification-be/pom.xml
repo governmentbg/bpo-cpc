@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <!--    <parent>-->
+    <!--        <groupId>org.springframework.boot</groupId>-->
+    <!--        <artifactId>spring-boot-starter-parent</artifactId>-->
+    <!--        <version>3.2.1</version>-->
+    <!--        <relativePath/> &lt;!&ndash; lookup parent from repository &ndash;&gt;-->
+    <!--    </parent>-->
+    <parent>
+        <groupId>bg.duosoft.bpo</groupId>
+        <artifactId>bpo-master-pom</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    <groupId>bg.duosoft.bpo-patent-classification-be</groupId>
+    <artifactId>bpo-patent-classification-be</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <name>bpo-patent-classification-be</name>
+    <description>Converter XML - DB for IPC classes</description>
+
+    <properties>
+        <java.version>21</java.version>
+        <logging.extras.version>2.0-SNAPSHOT</logging.extras.version>
+        <com.squareup.okhttp3.version>4.9.3</com.squareup.okhttp3.version>
+        <spring.cloud.version>2023.0.0</spring.cloud.version>
+    </properties>
+    <!--    <properties>-->
+    <!--        <com.squareup.okhttp3.version>4.9.3</com.squareup.okhttp3.version>-->
+    <!--        <java.version>21</java.version>-->
+    <!--        <spring.boot.version>3.2.1</spring.boot.version>-->
+    <!--        <spring.cloud.version>2023.0.0</spring.cloud.version>-->
+    <!--        <bpo.common.version>1.0.0-SNAPSHOT</bpo.common.version>-->
+    <!--        <bpo.registers.version>1.0.0-SNAPSHOT</bpo.registers.version>-->
+    <!--        <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>-->
+    <!--        <logging.extras.version>2.0-SNAPSHOT</logging.extras.version>-->
+    <!--        <springdoc.version>2.3.0</springdoc.version>-->
+    <!--        <swagger.core.version>2.2.19</swagger.core.version>-->
+    <!--        <springfox.io.core.version>3.0.0</springfox.io.core.version>-->
+    <!--        <hibernate.search.version>7.0.0.Final</hibernate.search.version>-->
+    <!--        <spring.cloud.openfeign.version>4.1.0</spring.cloud.openfeign.version>-->
+
+    <!--        &lt;!&ndash; properties from spring-boot-dependencies &ndash;&gt;-->
+    <!--        <lombok.version>1.18.30</lombok.version>-->
+    <!--        <spring-framework.version>6.1.2</spring-framework.version>-->
+    <!--        <io.minio.version>8.5.7</io.minio.version>-->
+    <!--        &lt;!&ndash; end of properties from spring-boot-dependencies &ndash;&gt;-->
+    <!--    </properties>-->
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <activeProfile>dev</activeProfile>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <!--        <profile>-->
+        <!--            <id>romania</id>-->
+        <!--            <properties>-->
+        <!--                <activeProfile>romania</activeProfile>-->
+        <!--            </properties>-->
+        <!--        </profile>-->
+        <profile>
+            <id>stage</id>
+            <properties>
+                <activeProfile>stage</activeProfile>
+            </properties>
+        </profile>
+        <profile>
+            <id>office</id>
+            <properties>
+                <activeProfile>office</activeProfile>
+            </properties>
+        </profile>
+        <profile>
+            <id>production</id>
+            <properties>
+                <activeProfile>production</activeProfile>
+            </properties>
+        </profile>
+    </profiles>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>mssql-jdbc</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>4.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>${com.squareup.okhttp3.version}</version>
+        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>bg.duosoft.logging</groupId>-->
+        <!--            <artifactId>logging-extras-db</artifactId>-->
+        <!--            <version>${logging.extras.version}</version>-->
+        <!--        </dependency>-->
+        <dependency>
+            <groupId>bg.duosoft.bpo</groupId>
+            <artifactId>bpo-common-security</artifactId>
+            <version>${bpo.common.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>bg.duosoft.bpo</groupId>
+            <artifactId>bpo-common-web</artifactId>
+            <version>${bpo.common.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>bg.duosoft.bpo</groupId>
+            <artifactId>bpo-common-dto</artifactId>
+            <version>${bpo.common.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+            <version>4.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <version>4.0.2</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.16.1</version>
+        </dependency>
+
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring.cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <finalName>bpo-patent-classification-be</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                    <include>**/*.yml</include>
+                </includes>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <forceJavacCompilerUse>true</forceJavacCompilerUse>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${org.mapstruct.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+        </plugins>
+
+    </build>
+
+</project>
